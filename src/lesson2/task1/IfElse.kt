@@ -7,6 +7,7 @@ import kotlin.math.max
 import kotlin.math.sqrt
 import kotlin.math.abs
 import kotlin.comparisons.maxOf
+import kotlin.math.min
 
 // Урок 2: ветвления (здесь), логический тип (см. 2.2).
 // Максимальное количество баллов = 6
@@ -89,17 +90,14 @@ fun timeForHalfWay(
     t2: Double, v2: Double,
     t3: Double, v3: Double
 ): Double {
-    val s = (t1 * v1 + t2 * v2 + t3 * v3)
-    if (t1 * v1 == s / 2) return t1
-    if (t1 * v1 + t2 * v2 == s/ 2) return t1 + t2
-    return t1 + t2 + t3
+    val s1 = t1 * v1
+    val s2 = t2 * v2
+    val s3 = t3 * v3
+    val s = s1 + s2 + s3
+    if (s1 >= s / 2) return s / 2 / v1
+    if (s1 + s2 >= s / 2) return t1 + (s / 2 - s1) / v2
+    return t1 + t2 + (s / 2 - (s1 + s2)) / v3
 }
-//{
-//    val s = (t1 * v1 + t2 * v2 + t3 * v3)
-//    val vAvg = s / t1 + t2 + t3
-//    val t = s / vAvg
-//    return t / 2
-//}
 
 /**
  * Простая (2 балла)
@@ -151,10 +149,12 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val greaterSqr = maxOf(a, b, c) * maxOf(a, b, c)
-    if (greaterSqr < a * a + b * b + c * c - greaterSqr) return 0
-    if (greaterSqr == a * a + b * b + c * c - greaterSqr) return 1
-    if (greaterSqr > a * a + b * b + c * c - greaterSqr) return 2
+    if ((a <= b + c) and (b <= a + c) and (c <= a + b)) {
+        val greaterSqr = maxOf(a, b, c) * maxOf(a, b, c)
+        if (greaterSqr < a * a + b * b + c * c - greaterSqr) return 0
+        if (greaterSqr == a * a + b * b + c * c - greaterSqr) return 1
+        if (greaterSqr > a * a + b * b + c * c - greaterSqr) return 2
+    }
     return -1
 }
 
@@ -166,4 +166,8 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    val length = min(b, d) - max(c, a)
+    if (length < 0) return -1
+    return length
+}

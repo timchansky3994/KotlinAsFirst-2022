@@ -74,7 +74,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int =
     when {
-        n < 10 -> 1
+        abs(n) < 10 -> 1
         else -> 1 + digitNumber(n / 10)
     }
 
@@ -233,13 +233,10 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
 fun sin(x: Double, eps: Double): Double {
-    val y = x % PI
-    val resSign = when {
-        (x / PI).toInt() % 2 == 0 -> 1
-        else -> -1
-    }
-    if (y == 0.0) return 0.0
-    if (y == PI / 2) return resSign * 1.0
+    val y = x % (2 * PI)
+    if ((y == 0.0) or (y == PI)) return 0.0
+    if (y == 3 * PI / 2) return -1.0
+    if (y == PI / 2) return 1.0
     var sign = 1
     var res = 0.0
     var n = 1

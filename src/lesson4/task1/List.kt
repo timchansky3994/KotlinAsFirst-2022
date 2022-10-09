@@ -98,13 +98,16 @@ fun squares(vararg array: Int) = squares(array.toList()).toTypedArray()
  * Пробелы не следует принимать во внимание при сравнении символов, например, строка
  * "А роза упала на лапу Азора" является палиндромом.
  */
-fun isPalindrome(str: String): Boolean {
-    val lowerCase = str.lowercase().filter { it != ' ' }
-    for (i in 0..lowerCase.length / 2) {
-        if (lowerCase[i] != lowerCase[lowerCase.length - i - 1]) return false
-    }
-    return true
-}
+fun isPalindrome(str: String): Boolean = TODO()
+// {
+//    val lowerCase = str.lowercase().filter { it != ' ' }
+//    for (i in 0..lowerCase.length / 2) {
+//        if (lowerCase[i] != lowerCase[lowerCase.length - i - 1]) return false
+//    }
+//    return true
+//}
+
+//по какой-то причине котлин видит тут ошибки и проект не компилируется
 
 /**
  * Пример
@@ -356,8 +359,8 @@ fun russianUnderHundred(n: Int, thousands: Boolean): MutableList<String> {
         )
         res.add(
             when (n % 10) {
-                1 -> if (thousands) "один" else "одна"
-                2 -> if (thousands) "два" else "две"
+                1 -> if (thousands) "одна" else "один"
+                2 -> if (thousands) "две" else "два"
                 3 -> "три"
                 4 -> "четыре"
                 5 -> "пять"
@@ -373,11 +376,20 @@ fun russianUnderHundred(n: Int, thousands: Boolean): MutableList<String> {
 }
 
 fun russian(n: Int): String {
-    var words = mutableListOf<String>()
+    val words = mutableListOf<String>()
     if (n >= 1000) {
         words += russianUnderHundred(n / 1000, true)
-        words += if (n % 10000 / 1000 == 2 or 3 or 4) "тысячи" else "тысяча"
+        words += if ((n % 100000 / 1000 > 10) and (n % 100000 / 1000 < 20)) {
+            "тысяч"
+        } else {
+            when (n % 10000 / 1000) {
+                1 -> "тысяча"
+                2, 3, 4 -> "тысячи"
+                else -> "тысяч"
+            }
+        }
     }
     words += russianUnderHundred(n % 1000, false)
-    return words.joinToString(" ")
+    val words1 = words.filter(fun(it: String) = it != "")
+    return words1.joinToString(" ")
 }

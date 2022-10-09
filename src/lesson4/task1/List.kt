@@ -3,6 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import ru.spbstu.wheels.NullableMonad.filter
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -241,7 +242,63 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var x = n
+    var res = ""
+    while (x >= 1000) {
+        res += 'M'
+        x -= 1000
+    }
+    if (x / 900 == 1) {
+        res += "CM"
+        x -= 900
+    }
+    if (x / 500 == 1) {
+        res += "D"
+        x -= 500
+    }
+    if (x / 400 == 1) {
+        res += "CD"
+        x -= 400
+    }
+    while (x >= 100) {
+        res += 'C'
+        x -= 100
+    }
+    if (x / 90 == 1) {
+        res += "XC"
+        x -= 90
+    }
+    if (x / 50 == 1) {
+        res += "L"
+        x -= 50
+    }
+    if (x / 40 == 1) {
+        res += "XL"
+        x -= 40
+    }
+    while (x >= 10) {
+        res += 'X'
+        x -= 10
+    }
+    if (x / 9 == 1) {
+        res += "IX"
+        x -= 9
+    }
+    if (x / 5 == 1) {
+        res += "V"
+        x -= 5
+    }
+    if (x / 4 == 1) {
+        res += "IV"
+        x -= 4
+    }
+    while (x >= 1) {
+        res += 'I'
+        x -= 1
+    }
+    return res
+}
 
 /**
  * Очень сложная (7 баллов)
@@ -250,4 +307,78 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+
+fun russianUnderHundred(n: Int, thousands: Boolean): MutableList<String> {
+    val res = mutableListOf<String>()
+    res.add(
+        when (n / 100) {
+            1 -> "сто"
+            2 -> "двести"
+            3 -> "триста"
+            4 -> "четыреста"
+            5 -> "пятьсот"
+            6 -> "шестьсот"
+            7 -> "семьсот"
+            8 -> "восемьсот"
+            9 -> "девятьсот"
+            else -> ""
+        }
+    )
+    if ((10 < n % 100) and (n % 100 < 20)) {
+        res.add(
+            when (n % 10) {
+                1 -> "одиннадцать"
+                2 -> "двенадцать"
+                3 -> "тринадцать"
+                4 -> "четырнадцать"
+                5 -> "пятнадцать"
+                6 -> "шестнадцать"
+                7 -> "семнадцать"
+                8 -> "восемнадцать"
+                9 -> "девятнадцать"
+                else -> ""
+            }
+        )
+    } else {
+        res.add(
+            when (n % 100 / 10) {
+                1 -> "десять"
+                2 -> "двадцать"
+                3 -> "тридцать"
+                4 -> "сорок"
+                5 -> "пятьдесят"
+                6 -> "шестьдесят"
+                7 -> "семьдесят"
+                8 -> "восемьдесят"
+                9 -> "девяносто"
+                else -> ""
+            }
+        )
+        res.add(
+            when (n % 10) {
+                1 -> if (thousands) "один" else "одна"
+                2 -> if (thousands) "два" else "две"
+                3 -> "три"
+                4 -> "четыре"
+                5 -> "пять"
+                6 -> "шесть"
+                7 -> "семь"
+                8 -> "восемь"
+                9 -> "девять"
+                else -> ""
+            }
+        )
+    }
+    return res
+}
+
+fun russian(n: Int): String {
+    var words = mutableListOf<String>()
+    if (n >= 1000) {
+        words += russianUnderHundred(n / 1000, true)
+        words += if (n % 10000 / 1000 == 2 or 3 or 4) "тысячи" else "тысяча"
+    }
+    words += russianUnderHundred(n % 1000, false)
+    words = words.filter { it != "" }
+    return words.joinToString(" ")
+}

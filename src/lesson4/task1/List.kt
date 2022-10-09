@@ -379,6 +379,5 @@ fun russian(n: Int): String {
         words += if (n % 10000 / 1000 == 2 or 3 or 4) "тысячи" else "тысяча"
     }
     words += russianUnderHundred(n % 1000, false)
-    words = words.filter { it != "" }
     return words.joinToString(" ")
 }

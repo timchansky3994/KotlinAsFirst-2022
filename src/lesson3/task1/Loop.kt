@@ -102,7 +102,7 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (i in 3..sqrt(n.toDouble()).toInt() step 2) {
+    for (i in 3..sqrt(n.toDouble()).toInt()) {
         if (n % i == 0) return i
     }
     return n

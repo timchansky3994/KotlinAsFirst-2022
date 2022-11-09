@@ -102,7 +102,7 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (i in 2..sqrt(n.toDouble()).toInt()) {
+    for (i in 3..sqrt(n.toDouble()).toInt() step 2) {
         if (n % i == 0) return i
     }
     return n
@@ -114,7 +114,7 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    for (i in sqrt(n.toDouble()).toInt() downTo 1) {
+    for (i in (n / 2) downTo 2) {
         if (n % i == 0) return i
     }
     return 1
@@ -175,7 +175,7 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    for (i in 2..sqrt(max(m, n).toDouble()).toInt()) {
+    for (i in 2..min(m, n)) {
         if (m % i == 0 && n % i == 0) return false
     }
     return true

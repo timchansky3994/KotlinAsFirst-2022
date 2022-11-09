@@ -86,10 +86,6 @@ fun digitNumber(n: Int): Int =
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-//    when (n) {
-//        1, 2 -> 1
-//        else -> fib(n) + fib(n - 1)
-//    }
     var a = 0
     var b = 1
     for (i in 2..n) {
@@ -106,7 +102,7 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (i in 2..(n / 2)) {
+    for (i in 2..sqrt(n.toDouble()).toInt()) {
         if (n % i == 0) return i
     }
     return n
@@ -118,7 +114,7 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    for (i in (n / 2) downTo 1) {
+    for (i in sqrt(n.toDouble()).toInt() downTo 1) {
         if (n % i == 0) return i
     }
     return 1
@@ -179,8 +175,8 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    for (i in 2..(max(m, n) / 2)) {
-        if ((m % i == 0) and (n % i == 0)) return false
+    for (i in 2..sqrt(max(m, n).toDouble()).toInt()) {
+        if (m % i == 0 && n % i == 0) return false
     }
     return true
 }
@@ -234,7 +230,7 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  */
 fun sin(x: Double, eps: Double): Double {
     val y = x % (2 * PI)
-    if ((y == 0.0) or (y == PI)) return 0.0
+    if (y == 0.0 || y == PI) return 0.0
     if (y == 3 * PI / 2) return -1.0
     if (y == PI / 2) return 1.0
     var sign = 1
@@ -262,7 +258,7 @@ fun cos(x: Double, eps: Double): Double {
     val y = x % (2 * PI)
     if (y == 0.0) return 1.0
     if (y == PI) return -1.0
-    if ((y == PI / 2) or (y == 3 * PI / 2)) return 0.0
+    if (y == PI / 2 || y == 3 * PI / 2) return 0.0
     var sign = 1
     var res = 0.0
     var n = 0

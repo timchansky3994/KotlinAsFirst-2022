@@ -71,11 +71,11 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String {
-    if ((11 <= age % 100) and (age % 100 <= 14)) return "$age лет"
-    if ((age % 10 == 2) or (age % 10 == 3) or (age % 10 == 4)) return "$age года"
-    if (age % 10 == 1) return "$age год"
-    return "$age лет"
+fun ageDescription(age: Int): String = when {
+    (11 <= age % 100) && (age % 100 <= 14) -> "$age лет"
+    (age % 10 == 2) || (age % 10 == 3) || (age % 10 == 4) -> "$age года"
+    age % 10 == 1 -> "$age год"
+    else -> "$age лет"
 }
 
 /**
@@ -94,9 +94,11 @@ fun timeForHalfWay(
     val s2 = t2 * v2
     val s3 = t3 * v3
     val s = s1 + s2 + s3
-    if (s1 >= s / 2) return s / 2 / v1
-    if (s1 + s2 >= s / 2) return t1 + (s / 2 - s1) / v2
-    return t1 + t2 + (s / 2 - (s1 + s2)) / v3
+    return when {
+        s1 >= s / 2 -> s / 2 / v1
+        s1 + s2 >= s / 2 -> t1 + (s / 2 - s1) / v2
+        else -> t1 + t2 + (s / 2 - (s1 + s2)) / v3
+    }
 }
 
 /**
@@ -114,8 +116,8 @@ fun whichRookThreatens(
     rookX2: Int, rookY2: Int
 ): Int {
     var res = 0
-    if ((kingX == rookX1) or (kingY == rookY1)) res += 1
-    if ((kingX == rookX2) or (kingY == rookY2)) res += 2
+    if (kingX == rookX1 || kingY == rookY1) res += 1
+    if (kingX == rookX2 || kingY == rookY2) res += 2
     return res
 }
 
@@ -135,7 +137,7 @@ fun rookOrBishopThreatens(
     bishopX: Int, bishopY: Int
 ): Int {
     var res = 0
-    if ((kingX == rookX) or (kingY == rookY)) res += 1
+    if (kingX == rookX || kingY == rookY) res += 1
     if (abs(kingX - bishopX) == abs(kingY - bishopY)) res += 2
     return res
 }
@@ -149,11 +151,13 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    if ((a <= b + c) and (b <= a + c) and (c <= a + b)) {
+    if ((a <= b + c) && (b <= a + c) && (c <= a + b)) {
         val greaterSqr = maxOf(a, b, c) * maxOf(a, b, c)
-        if (greaterSqr < a * a + b * b + c * c - greaterSqr) return 0
-        if (greaterSqr == a * a + b * b + c * c - greaterSqr) return 1
-        if (greaterSqr > a * a + b * b + c * c - greaterSqr) return 2
+        when {
+            greaterSqr < a * a + b * b + c * c - greaterSqr -> return 0
+            greaterSqr == a * a + b * b + c * c - greaterSqr -> return 1
+            greaterSqr > a * a + b * b + c * c - greaterSqr -> return 2
+        }
     }
     return -1
 }

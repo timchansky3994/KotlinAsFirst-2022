@@ -3,7 +3,6 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
-import ru.spbstu.wheels.NullableMonad.filter
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -98,16 +97,13 @@ fun squares(vararg array: Int) = squares(array.toList()).toTypedArray()
  * Пробелы не следует принимать во внимание при сравнении символов, например, строка
  * "А роза упала на лапу Азора" является палиндромом.
  */
-fun isPalindrome(str: String): Boolean = TODO()
-// {
-//    val lowerCase = str.lowercase().filter { it != ' ' }
-//    for (i in 0..lowerCase.length / 2) {
-//        if (lowerCase[i] != lowerCase[lowerCase.length - i - 1]) return false
-//    }
-//    return true
-//}
-
-//по какой-то причине котлин видит тут ошибки и проект не компилируется
+fun isPalindrome(str: String): Boolean {
+    val lowerCase = str.lowercase().filter { it != ' ' }
+    for (i in 0..lowerCase.length / 2) {
+        if (lowerCase[i] != lowerCase[lowerCase.length - i - 1]) return false
+    }
+    return true
+}
 
 /**
  * Пример
@@ -247,60 +243,60 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  */
 fun roman(n: Int): String {
     var x = n
-    var res = ""
-    while (x >= 1000) {
-        res += 'M'
-        x -= 1000
+    return buildString {
+        while (x >= 1000) {
+            append('M')
+            x -= 1000
+        }
+        if (x / 900 == 1) {
+            append("CM")
+            x -= 900
+        }
+        if (x / 500 == 1) {
+            append("D")
+            x -= 500
+        }
+        if (x / 400 == 1) {
+            append("CD")
+            x -= 400
+        }
+        while (x >= 100) {
+            append('C')
+            x -= 100
+        }
+        if (x / 90 == 1) {
+            append("XC")
+            x -= 90
+        }
+        if (x / 50 == 1) {
+            append("L")
+            x -= 50
+        }
+        if (x / 40 == 1) {
+            append("XL")
+            x -= 40
+        }
+        while (x >= 10) {
+            append('X')
+            x -= 10
+        }
+        if (x / 9 == 1) {
+            append("IX")
+            x -= 9
+        }
+        if (x / 5 == 1) {
+            append("V")
+            x -= 5
+        }
+        if (x / 4 == 1) {
+            append("IV")
+            x -= 4
+        }
+        while (x >= 1) {
+            append('I')
+            x -= 1
+        }
     }
-    if (x / 900 == 1) {
-        res += "CM"
-        x -= 900
-    }
-    if (x / 500 == 1) {
-        res += "D"
-        x -= 500
-    }
-    if (x / 400 == 1) {
-        res += "CD"
-        x -= 400
-    }
-    while (x >= 100) {
-        res += 'C'
-        x -= 100
-    }
-    if (x / 90 == 1) {
-        res += "XC"
-        x -= 90
-    }
-    if (x / 50 == 1) {
-        res += "L"
-        x -= 50
-    }
-    if (x / 40 == 1) {
-        res += "XL"
-        x -= 40
-    }
-    while (x >= 10) {
-        res += 'X'
-        x -= 10
-    }
-    if (x / 9 == 1) {
-        res += "IX"
-        x -= 9
-    }
-    if (x / 5 == 1) {
-        res += "V"
-        x -= 5
-    }
-    if (x / 4 == 1) {
-        res += "IV"
-        x -= 4
-    }
-    while (x >= 1) {
-        res += 'I'
-        x -= 1
-    }
-    return res
 }
 
 /**
@@ -327,7 +323,7 @@ fun russianUnderHundred(n: Int, thousands: Boolean): MutableList<String> {
             else -> ""
         }
     )
-    if ((10 < n % 100) and (n % 100 < 20)) {
+    if ((10 < n % 100) && (n % 100 < 20)) {
         res.add(
             when (n % 10) {
                 1 -> "одиннадцать"
@@ -379,7 +375,7 @@ fun russian(n: Int): String {
     val words = mutableListOf<String>()
     if (n >= 1000) {
         words += russianUnderHundred(n / 1000, true)
-        words += if ((n % 100000 / 1000 > 10) and (n % 100000 / 1000 < 20)) {
+        words += if (n % 100000 / 1000 in 11..19) {
             "тысяч"
         } else {
             when (n % 10000 / 1000) {

@@ -127,7 +127,18 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+//    if ('+' !in jumps) return -1
+    return try {
+        val results = mutableSetOf<Int>()
+        for (found in Regex("""(\d+)\s%*\+""").findAll(jumps)) {
+            results.add(found.groupValues[1].toInt())
+        }
+        results.max()
+    } catch (e: Exception) {
+        -1
+    }
+}
 
 /**
  * Сложная (6 баллов)

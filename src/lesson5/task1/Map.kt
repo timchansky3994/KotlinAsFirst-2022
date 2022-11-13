@@ -2,6 +2,9 @@
 
 package lesson5.task1
 
+import java.util.StringJoiner
+import kotlin.math.min
+
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -108,7 +111,10 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
+    for ((k, v) in a) if (b[k] != v) return false
+    return true
+}
 
 /**
  * Простая (2 балла)
@@ -125,7 +131,9 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *     -> a changes to mutableMapOf() aka becomes empty
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
-    TODO()
+    val keysToRemove = mutableListOf<String>()
+    for ((k, v) in b) if (a[k] == v) keysToRemove.add(k)
+    for (elem in keysToRemove) a.remove(elem)
 }
 
 /**
@@ -183,7 +191,23 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    var cheapestCost = Double.MAX_VALUE
+    var cheapestName = ""
+    for ((name, goods) in stuff) {
+        val (type, cost) = goods
+        if (type == kind) {
+            if (cost < cheapestCost) {
+                cheapestCost = cost
+                cheapestName = name
+            }
+        }
+    }
+    return when (cheapestName) {
+        "" -> null
+        else -> cheapestName
+    }
+}
 
 /**
  * Средняя (3 балла)

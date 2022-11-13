@@ -386,6 +386,6 @@ fun russian(n: Int): String {
         }
     }
     words += russianUnderHundred(n % 1000, false)
-    val words1 = words.filter(fun(it: String) = it != "")
+    val words1 = words.filter { it != "" }
     return words1.joinToString(" ")
 }

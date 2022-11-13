@@ -327,13 +327,3 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  *   ) -> emptySet()
  */
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
-//
-//fun bagPackingCalculation(cost: Int, capacity: Int): Int = max()
-//
-//fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-//    val solutions = mutableMapOf<Int, Int>()
-//    solutions[0] = 0
-//    for (i in capacity downTo 1) {
-//        solutions[i] =
-//    }
-//}

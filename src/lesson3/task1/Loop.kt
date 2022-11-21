@@ -170,8 +170,8 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    for (i in 2..min(m, n)) {
-        if (m % i == 0 && n % i == 0) return false
+    for (i in 2..sqrt(min(m, n).toDouble()).toInt()) {
+        if (m % i == 0 && n % i == 0 && (max(m, n) % (min(m, n) / i) == 0)) return false
     }
     return true
 }

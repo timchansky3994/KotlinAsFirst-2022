@@ -3,6 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 4: списки
@@ -243,58 +244,23 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  */
 fun roman(n: Int): String {
     var x = n
+    val numbers = listOf(9, 5, 4)
+    val symbols = arrayOf(arrayOf("IX", 'V', "IV", 'I'), arrayOf("XC", 'L', "XL", 'X'), arrayOf("CM", 'D', "CD", 'C'))
     return buildString {
-        while (x >= 1000) {
-            append('M')
-            x -= 1000
-        }
-        if (x / 900 == 1) {
-            append("CM")
-            x -= 900
-        }
-        if (x / 500 == 1) {
-            append("D")
-            x -= 500
-        }
-        if (x / 400 == 1) {
-            append("CD")
-            x -= 400
-        }
-        while (x >= 100) {
-            append('C')
-            x -= 100
-        }
-        if (x / 90 == 1) {
-            append("XC")
-            x -= 90
-        }
-        if (x / 50 == 1) {
-            append("L")
-            x -= 50
-        }
-        if (x / 40 == 1) {
-            append("XL")
-            x -= 40
-        }
-        while (x >= 10) {
-            append('X')
-            x -= 10
-        }
-        if (x / 9 == 1) {
-            append("IX")
-            x -= 9
-        }
-        if (x / 5 == 1) {
-            append("V")
-            x -= 5
-        }
-        if (x / 4 == 1) {
-            append("IV")
-            x -= 4
-        }
-        while (x >= 1) {
-            append('I')
-            x -= 1
+        for (k in 1..x / 1000) append('M')
+        x -= 1000 * (x / 1000)
+
+        for (i in 2 downTo 0) {
+            val powerOfTen = 10.0.pow(i).toInt()
+            for (j in 0..2) {
+                val num = numbers[j] * powerOfTen
+                if (x >= num) {
+                    append(symbols[i][j])
+                    x -= num
+                }
+            }
+            for (k in 1..x / powerOfTen) append(symbols[i][3])
+            x -= powerOfTen * (x / powerOfTen)
         }
     }
 }

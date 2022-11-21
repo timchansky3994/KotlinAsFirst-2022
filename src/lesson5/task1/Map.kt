@@ -189,12 +189,12 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Мария"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    var cheapestCost = -1.0
+    var cheapestCost: Double? = null
     var cheapestName: String? = null
     for ((name, goods) in stuff) {
         val (type, cost) = goods
         if (type == kind) {
-            if (cost < cheapestCost || cheapestCost == -1.0) {
+            if (cheapestCost == null || cost < cheapestCost) {
                 cheapestCost = cost
                 cheapestName = name
             }
@@ -298,7 +298,8 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     val indexMap = mutableMapOf<Int, Int>()
     for ((index, i) in list.withIndex()) {
-        if (number - i in indexMap) {
+        val n = number - i
+        if (indexMap[n] != null) {
             return indexMap[number - i]!! to index
         } else indexMap[i] = index
     }

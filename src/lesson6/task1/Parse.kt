@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import java.util.NoSuchElementException
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -121,7 +123,7 @@ fun bestLongJump(jumps: String): Int {
             if (found.isNotEmpty() && found.toInt() > res) res = found.toInt()
         }
         res
-    } catch (e: java.lang.Exception) {
+    } catch (e: NumberFormatException) {
         -1
     }
 }
@@ -144,7 +146,7 @@ fun bestHighJump(jumps: String): Int {
             results.add(found.groupValues[1].toInt())
         }
         results.max()
-    } catch (e: Exception) {
+    } catch (e: NoSuchElementException) {
         -1
     }
 }

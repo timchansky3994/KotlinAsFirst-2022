@@ -245,7 +245,7 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
 fun roman(n: Int): String {
     var x = n
     val numbers = listOf(9, 5, 4)
-    val symbols = arrayOf(arrayOf("IX", 'V', "IV", 'I'), arrayOf("XC", 'L', "XL", 'X'), arrayOf("CM", 'D', "CD", 'C'))
+    val symbols = listOf(listOf("IX", 'V', "IV", 'I'), listOf("XC", 'L', "XL", 'X'), listOf("CM", 'D', "CD", 'C'))
     return buildString {
         for (k in 1..x / 1000) append('M')
         x -= 1000 * (x / 1000)
@@ -273,85 +273,59 @@ fun roman(n: Int): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 
-fun russianUnderHundred(n: Int, thousands: Boolean): MutableList<String> {
+fun russianUnderHundred(n: Int, thousands: Boolean): String {
     val res = mutableListOf<String>()
-    res.add(
-        when (n / 100) {
-            1 -> "сто"
-            2 -> "двести"
-            3 -> "триста"
-            4 -> "четыреста"
-            5 -> "пятьсот"
-            6 -> "шестьсот"
-            7 -> "семьсот"
-            8 -> "восемьсот"
-            9 -> "девятьсот"
-            else -> ""
-        }
+    val hundreds = listOf(
+        "", "сто", "двести", "триста", "четыреста", "пятьсот",
+        "шестьсот", "семьсот", "восемьсот", "девятьсот"
     )
-    if ((10 < n % 100) && (n % 100 < 20)) {
-        res.add(
-            when (n % 10) {
-                1 -> "одиннадцать"
-                2 -> "двенадцать"
-                3 -> "тринадцать"
-                4 -> "четырнадцать"
-                5 -> "пятнадцать"
-                6 -> "шестнадцать"
-                7 -> "семнадцать"
-                8 -> "восемнадцать"
-                9 -> "девятнадцать"
-                else -> ""
+    val tens = listOf(
+        "", "десять", "двадцать", "тридцать", "сорок", "пятьдесят",
+        "шестьдесят", "семьдесят", "восемьдесят", "девяносто"
+    )
+    val teens = listOf(
+        "", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать",
+        "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать"
+    )
+    val numbers = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+    return buildString {
+        append(hundreds[n / 100])
+        if ((10 < n % 100) && (n % 100 < 20)) {
+            append(teens[n % 10])
+        } else {
+            append(tens[n % 100 / 10])
+            if (thousands && (n % 10 == 1 || n % 10 == 2)) {
+                append(
+                    when (n % 10) {
+                        1 -> "одна"
+                        2 -> "две"
+                        else -> ""
+                    }
+                )
+            } else {
+                append(numbers[n % 10])
             }
-        )
-    } else {
-        res.add(
-            when (n % 100 / 10) {
-                1 -> "десять"
-                2 -> "двадцать"
-                3 -> "тридцать"
-                4 -> "сорок"
-                5 -> "пятьдесят"
-                6 -> "шестьдесят"
-                7 -> "семьдесят"
-                8 -> "восемьдесят"
-                9 -> "девяносто"
-                else -> ""
-            }
-        )
-        res.add(
-            when (n % 10) {
-                1 -> if (thousands) "одна" else "один"
-                2 -> if (thousands) "две" else "два"
-                3 -> "три"
-                4 -> "четыре"
-                5 -> "пять"
-                6 -> "шесть"
-                7 -> "семь"
-                8 -> "восемь"
-                9 -> "девять"
-                else -> ""
-            }
-        )
+        }
     }
-    return res
 }
 
 fun russian(n: Int): String {
     val words = mutableListOf<String>()
-    if (n >= 1000) {
-        words += russianUnderHundred(n / 1000, true)
-        words += if (n % 100000 / 1000 in 11..19) {
-            "тысяч"
-        } else {
-            when (n % 10000 / 1000) {
-                1 -> "тысяча"
-                2, 3, 4 -> "тысячи"
-                else -> "тысяч"
+    return buildString {
+        if (n >= 1000) {
+            append(russianUnderHundred(n / 1000, true))
+            if (n % 100000 / 1000 in 11..19) {
+                append("тысяч")
+            } else {
+                append(
+                    when (n % 10000 / 1000) {
+                        1 -> "тысяча"
+                        2, 3, 4 -> "тысячи"
+                        else -> "тысяч"
+                    }
+                )
             }
         }
+        append(russianUnderHundred(n % 1000, false))
     }
-    words += russianUnderHundred(n % 1000, false)
-    val words1 = words.filter { it != "" }
-    return words1.joinToString(" ")
 }

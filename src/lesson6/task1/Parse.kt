@@ -2,8 +2,6 @@
 
 package lesson6.task1
 
-import java.util.NoSuchElementException
-
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -117,15 +115,13 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    return try {
-        var res = -1
+    var res = -1
+    if (Regex("""\d+(\s(-|%|\d+))*""").matches(jumps)) {
         for (found in Regex("""[\s\-%]""").split(jumps)) {
             if (found.isNotEmpty() && found.toInt() > res) res = found.toInt()
         }
-        res
-    } catch (e: NumberFormatException) {
-        -1
     }
+    return res
 }
 
 /**

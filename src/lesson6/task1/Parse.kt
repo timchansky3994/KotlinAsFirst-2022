@@ -136,15 +136,14 @@ fun bestLongJump(jumps: String): Int {
  * вернуть -1.
  */
 fun bestHighJump(jumps: String): Int {
-    return try {
-        val results = mutableSetOf<Int>()
+    val results = mutableSetOf<Int>()
+    if (jumps.contains(Regex("""(\d+)\s%*\+"""))) {
         for (found in Regex("""(\d+)\s%*\+""").findAll(jumps)) {
             results.add(found.groupValues[1].toInt())
         }
-        results.max()
-    } catch (e: NoSuchElementException) {
-        -1
+        return results.max()
     }
+    return -1
 }
 
 /**

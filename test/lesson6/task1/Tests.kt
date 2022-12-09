@@ -150,14 +150,4 @@ class Tests {
         assertThrows(IllegalArgumentException::class.java) { computeDeviceCells(10, "+>+>[+>", 3) }
         assertThrows(IllegalStateException::class.java) { computeDeviceCells(20, ">>>>>>>>>>>>>", 12) }
     }
-
-    @Test
-    @Tag("5")
-    fun calculateTaxes() {
-        assertEquals(
-            13.0, calculateTaxes("20000\$ = 0%, 40000\$ = 5%, 60000\$ = 10%, other = 25%", 100000)
-        )
-
-        assertThrows(IllegalArgumentException::class.java) { calculateTaxes("20\$: 0%, 40\$: 10%, other: 25%", 100) }
-    }
 }

@@ -236,3 +236,36 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+
+fun calculateTaxes(taxes: String, money: Int): Double {
+    var taxMoney = 0.0
+    if (!taxes.matches(Regex("""(\d+\$\s=\s\d+%)(,\s\d+\$\s=\s\d+%)*(,\sother\s=\s\d+%)"""))) {
+        throw IllegalArgumentException()
+    }
+    val tax = mutableMapOf<Int, Double>()
+    val sortedTax = mutableListOf<Int>()
+    for (i in taxes.split(", ")) {
+        val (limit, percent) = i.split(" = ")
+        if (limit != "other") {
+            tax[limit.trim('$').toInt()] = percent.trim('%').toInt() / 100.0
+            sortedTax.add(limit.trim('$').toInt())
+        } else {
+            tax[-1] = percent.trim('%').toInt() / 100.0
+        }
+    }
+    sortedTax.sort()
+    sortedTax.add(-1)
+    sortedTax.add(0, 0)
+    for (i in 1 until sortedTax.size) {
+        val x = sortedTax[i]
+        if (money <= x) {
+            taxMoney += money * tax[x]!!
+            break
+        } else {
+            taxMoney += if (x == -1) {
+                (money - sortedTax[i - 1]) * tax[x]!!
+            } else (x - sortedTax[i - 1]) * tax[x]!!
+        }
+    }
+    return taxMoney / money * 100
+}

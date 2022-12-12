@@ -301,14 +301,14 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var text = File(inputName).readText()
-    text = Regex("""(?<!\*\*)\*\*(.*?)\*\*(?!\*\*)""").replace(text) { "<b>" + it.value.drop(2).dropLast(2).trim() + "</b>" }
-    text = Regex("""(?<!\*)\*(.*?)\*(?!\*)""").replace(text) { "<i>" + it.value.drop(1).dropLast(1).trim() + "</i>" }
-    text = Regex("""~~(.*?)~~""").replace(text) { "<s>" + it.value.drop(2).dropLast(2).trim() + "</s>" }
-    text = text.replace(Regex("""[\r\t ]"""), "")
-    while ("\n\n\n" in text) {
+    text = Regex("""(?<!\*\*)\*\*(.*?)\*\*(?!\*\*)""").replace(text, "<b>$1</b>")
+    text = Regex("""(?<!\*)\*(.*?)\*(?!\*)""").replace(text, "<i>$1</i>")
+    text = Regex("""~~(.*?)~~""").replace(text, "<s>$1</s>")
+    text = Regex("""[\r\t ]""").replace(text, "")
+    while (text.contains("\n\n\n")) {
         text = text.replace("\n\n\n", "\n\n")
     }
-    text = text.replace("\n\n", "</p><p>")
+    text = text.replace("\n\n", "</p><p>").replace("\n", "")
     File(outputName).writeText("<html><body><p>$text</p></body></html>")
 }
 

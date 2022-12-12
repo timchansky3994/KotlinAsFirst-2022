@@ -304,10 +304,11 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     text = Regex("""(?<!\*\*)\*\*(.*?)\*\*(?!\*\*)""").replace(text) { "<b>" + it.value.drop(2).dropLast(2) + "</b>" }
     text = Regex("""(?<!\*)\*(.*?)\*(?!\*)""").replace(text) { "<i>" + it.value.drop(1).dropLast(1) + "</i>" }
     text = Regex("""~~(.*?)~~""").replace(text) { "<s>" + it.value.drop(2).dropLast(2) + "</s>" }
-    while ("\r\n\r\n\r\n" in text) {
-        text.replace("\r\n\r\n\r\n", "\r\n\r\n")
+    text = text.replace("\r\n", "\n")
+    while ("\n\n\n" in text) {
+        text.replace("\n\n\n", "\n\n")
     }
-    text = text.replace("\r\n\r\n", "</p><p>")
+    text = text.replace("\n\n", "</p><p>")
     File(outputName).writeText("<html><body><p>$text</p></body></html>")
 }
 

@@ -304,7 +304,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     text = Regex("""(?<!\*\*)\*\*(.*?)\*\*(?!\*\*)""").replace(text) { "<b>" + it.value.drop(2).dropLast(2).trim() + "</b>" }
     text = Regex("""(?<!\*)\*(.*?)\*(?!\*)""").replace(text) { "<i>" + it.value.drop(1).dropLast(1).trim() + "</i>" }
     text = Regex("""~~(.*?)~~""").replace(text) { "<s>" + it.value.drop(2).dropLast(2).trim() + "</s>" }
-    text = text.replace(Regex("""[\r\t\s]"""), "")
+    text = text.replace(Regex("""[\r\t ]"""), "")
     while ("\n\n\n" in text) {
         text = text.replace("\n\n\n", "\n\n")
     }

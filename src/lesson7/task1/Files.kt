@@ -298,7 +298,15 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+    var text = File(inputName).readText()
+    text = Regex("""(?<!\*\*)\*\*(.*?)\*\*(?!\*\*)""").replace(text) { "<b>" + it.value.drop(2).dropLast(2) + "</b>" }
+    text = Regex("""(?<!\*)\*(.*?)\*(?!\*)""").replace(text) { "<i>" + it.value.drop(1).dropLast(1) + "</i>" }
+    text = Regex("""~~(.*?)~~""").replace(text) { "<s>" + it.value.drop(2).dropLast(2) + "</s>" }
+    while ("\r\n\r\n\r\n" in text) {
+        text.replace("\r\n\r\n\r\n", "\r\n\r\n")
+    }
+    text = text.replace("\r\n\r\n", "</p><p>")
+    File(outputName).writeText("<html><body><p>$text</p></body></html>")
 }
 
 /**

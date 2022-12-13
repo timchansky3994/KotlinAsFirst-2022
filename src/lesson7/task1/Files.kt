@@ -308,7 +308,8 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     while (text.contains("\n\n\n")) {
         text = text.replace("\n\n\n", "\n\n")
     }
-    text = text.replace("\n\n", "</p><p>").replace("\n", "")
+    text = text.trim('\n').trim('\n')
+        .replace("\n\n", "</p><p>").replace("\n", "")
     File(outputName).writeText("<html><body><p>$text</p></body></html>")
 }
 

@@ -257,7 +257,7 @@ Basic, Ruby, Swift.
     @Tag("22")
     fun markdownToHtmlSimple() {
         markdownToHtmlSimple("input/markdown_simple.md", "temp.html")
-//        checkHtmlSimpleExample()
+        checkHtmlSimpleExample()
     }
 
     private fun checkHtmlListsExample() {

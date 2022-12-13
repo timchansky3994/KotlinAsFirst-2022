@@ -301,14 +301,14 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var text = File(inputName).readText()
-    text = Regex("""(?<!\*\*)\*\*(.*?)\*\*(?!\*\*)""").replace(text, "<b>$1</b>")
-    text = Regex("""(?<!\*)\*(.*?)\*(?!\*)""").replace(text, "<i>$1</i>")
-    text = Regex("""~~(.*?)~~""").replace(text, "<s>$1</s>")
-    text = text.replace("\r", "")
+    text = Regex("""(?s)(?<!\*\*)\*\*(.*?)\*\*(?!\*\*)""").replace(text, "<b>$1</b>")
+    text = Regex("""(?s)(?<!\*)\*(.*?)\*(?!\*)""").replace(text, "<i>$1</i>")
+    text = Regex("""(?s)~~(.*?)~~""").replace(text, "<s>$1</s>")
+    text = text.replace(Regex("""[\t\r ]"""), "")
     while (text.contains("\n\n\n")) {
         text = text.replace("\n\n\n", "\n\n")
     }
-    text = text.replace("\n\n", "</p><p>")
+    text = text.replace("\n\n", "</p><p>").replace("\n", "")
     File(outputName).writeText("<html><body><p>$text</p></body></html>")
 }
 

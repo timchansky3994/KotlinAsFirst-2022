@@ -411,7 +411,53 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlLists(inputName: String, outputName: String) {
-    TODO()
+    var res = buildString {
+        val stackOpened = mutableListOf<String>()
+        val mapOpen = mapOf(true to "<ol>", false to "<ul>")
+        val mapClose = mapOf(true to "</ol>", false to "</ul>")
+        var nested = -1
+        var prevOrdered = true
+
+        fun startNewList(line: String, ordered: Boolean) {
+            nested++
+            stackOpened.add(mapClose[ordered]!!)
+            append(mapOpen[ordered]!!)
+        }
+
+        for (line in File(inputName).readLines()) {
+            val ordered = !(line.trimStart(' ').startsWith("* "))
+            if (line.startsWith("    ".repeat(nested + 1))) {
+                startNewList(line, ordered)
+                append("<li>")
+                append(Regex("""^ *(?:\* |\d+\. )(.*)$""").find(line)!!.groupValues[1])
+            } else if (line.startsWith("    ".repeat(nested))) {
+                append("</li><li>")
+                append(Regex("""^ *(?:\* |\d+\. )(.*)$""").find(line)!!.groupValues[1])
+            } else {
+                val indents = Regex("""( {4})(?= {4}|\* |\d+\. )""").findAll(line).count()
+                append("</li>")
+                for (i in 0 until nested - indents) {
+                    if (stackOpened.size != indents + 1 || prevOrdered != ordered) {
+                        append(stackOpened.last())
+                        stackOpened.removeLast()
+                    }
+                    append("</li>")
+                    if (stackOpened.size != indents + 1 || stackOpened.last() != mapClose[ordered]) {
+                        startNewList(line, ordered)
+                    }
+                    append("<li>")
+                    append(Regex("""^ *(?:\* |\d+\. )(.*)$""").find(line)!!.groupValues[1])
+                }
+                nested = indents
+            }
+            prevOrdered = ordered
+        }
+        for (i in stackOpened.reversed()) {
+            append("</li>")
+            append(i)
+        }
+    }
+    File(outputName).writeText("<html><body><p>$res</p></body></html>")
 }
 
 /**
